@@ -1,0 +1,92 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+import React = require("react");
+import { createRoot } from "react-dom/client";
+import { IInputs, IOutputs } from "./generated/ManifestTypes";
+import { ServiceProvider } from "./Models/ServiceProvider";
+import { ViewModel } from "./Models/ViewModel";
+import { DataverseService } from "./Models/DataverseService";
+import { StartingTemplateControlMain } from "./Components/StartingTemplateControlMain";
+import { runInAction } from "mobx";
+
+export class HelloWorldControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+  private _container: HTMLDivElement;
+  serviceProvider: ServiceProvider;
+  viewModel: ViewModel;
+  private notifyOutputChanged: () => void;
+
+  /**
+   * Empty constructor.
+   */
+  constructor() {}
+
+  /**
+   * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
+   * Data-set values are not initialized here, use updateView.
+   * @param _context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to property names defined in the manifest, as well as utility functions.
+   * @param _notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
+   * @param _state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
+   */
+  public init(
+    context: ComponentFramework.Context<IInputs>,
+    notifyOutputChanged: () => void,
+    state: ComponentFramework.Dictionary,
+    container: HTMLDivElement,
+  ): void {
+    this._container = container;
+    this.viewModel = new ViewModel();
+    this.viewModel.refresh = function () {
+      notifyOutputChanged();
+    };
+    this.serviceProvider = new ServiceProvider();
+    this.serviceProvider.register("vm", this.viewModel);
+    this.serviceProvider.register("dv", new DataverseService(context.webAPI, context));
+
+    context.mode.trackContainerResize(true);
+  }
+
+  /**
+   * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
+   * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
+   */
+  public updateView(context: ComponentFramework.Context<IInputs>): void {
+    const dv = new DataverseService(context.webAPI, context);
+    this.serviceProvider.register("dv", dv);
+
+    const vm = this.viewModel;
+    vm.setAllocatedSize(context.mode.allocatedWidth, context.mode.allocatedHeight);
+
+    if (!vm.loading && vm.displayValues.length === 0) {
+      vm.set("loading", true);
+      dv.loadData().then((result) => {
+        const vals: string[] = [];
+        result.map((entity) => {
+          vals.push(entity["name"]);
+        });
+        vm.set("displayValues", vals);
+        vm.set("loading", false);
+      });
+    }
+
+    vm.set("boundValue", context.parameters.boundField.raw ?? "");
+    vm.set("inputValue", context.parameters.inputField.raw ?? "");
+
+    const reactRoot = createRoot(this._container);
+    reactRoot.render(React.createElement(StartingTemplateControlMain, { serviceProvider: this.serviceProvider }));
+  }
+
+  /**
+   * It is called by the framework prior to a control receiving new data.
+   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
+   */
+  public getOutputs(): IOutputs {
+    return {};
+  }
+
+  /**
+   * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
+   * i.e. cancelling any pending remote calls, removing listeners, etc.
+   */
+  public destroy(): void {
+    // Add code to cleanup control if necessary
+  }
+}

@@ -1,0 +1,66 @@
+# Node / TypeScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Output directories
+out/
+dist/
+build/
+.vs/
+*/.vs/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Gg]enerated/
+
+
+# Coverage / test output
+coverage/
+*.lcov
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env files (if used)
+.env
+.env.local
+.env.*.local
+
+# Package lock files (optional, depending on workflow)
+# Uncomment one if you want to enforce consistency
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Power Platform artifacts
+*.cdsproj
+*.msapp
+*.solution.zip
+
+# Build caches
+.cache/
+.temp/
+/HelloWorldPlugin/MB.DataversePlugins/bin/Debug
