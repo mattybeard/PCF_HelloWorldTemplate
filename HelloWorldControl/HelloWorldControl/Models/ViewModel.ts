@@ -34,11 +34,6 @@ export class ViewModel {
       set: action,
       setCustomApiResponse: action,
     });
-
-    makeObservable(this, {
-      setAllocatedSize: action,
-      set: action,
-    });
   }
 
   setAllocatedSize(width: number, height: number) {
