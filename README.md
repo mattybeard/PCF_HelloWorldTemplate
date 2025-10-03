@@ -32,6 +32,7 @@ This repository contains a simple **HelloWorld PCF control** and an accompanying
 - A Dataverse environment with the Custom API deployed  
 
 ### Build & Test the PCF Control  
+Confirm you are in the PCF Control directory (HelloWorldControl)
 ```bash
 npm install
 npm run build
