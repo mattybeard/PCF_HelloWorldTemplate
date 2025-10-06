@@ -79,7 +79,9 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
    */
   public getOutputs(): IOutputs {
-    return {};
+    return {
+      boundField: this.viewModel.boundValue,
+    };
   }
 
   /**

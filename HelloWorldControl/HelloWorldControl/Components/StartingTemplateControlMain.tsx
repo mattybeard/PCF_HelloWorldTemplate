@@ -6,6 +6,7 @@ import { ViewModel } from "../Models/ViewModel";
 import { ListControl } from "./ListControl";
 import { FieldControl } from "./FieldControl";
 import { ButtonCustomApiControl } from "./ButtonCustomApiControl";
+import { BoundButtonControl } from "./BoundButtonControl";
 
 export interface StartingTemplateControlMainProps {
   serviceProvider: ServiceProvider;
@@ -28,6 +29,10 @@ export const StartingTemplateControlMain = observer((props: StartingTemplateCont
           </Stack.Item>
           <Stack.Item>
             <ListControl />
+          </Stack.Item>
+          <Stack.Item>
+            <BoundButtonControl />
+            <br />
           </Stack.Item>
           <Stack.Item>
             <ButtonCustomApiControl apiName="HelloWorld" />
