@@ -51,7 +51,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
   public updateView(context: ComponentFramework.Context<IInputs>): void {
     const dv = new DataverseService(context.webAPI, context);
     this.serviceProvider.register("dv", dv);
-
+    console.log("UpdateView called");
     const vm = this.viewModel;
     vm.setAllocatedSize(context.mode.allocatedWidth, context.mode.allocatedHeight);
 

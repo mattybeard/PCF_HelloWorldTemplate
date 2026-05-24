@@ -13,7 +13,23 @@ export class DataverseService {
   loadData(): Promise<any[]> {
     const webApi = this.webApi;
     return new Promise(function (resolve, reject) {
-      webApi.retrieveMultipleRecords("account", "?$select=name").then(
+      webApi.retrieveMultipleRecords("account", "?$select=name&$top=5").then(
+        function (response: any) {
+          if (response == null) rdfesolve([]);
+          resolve(response.entities);
+        },
+        function (error: any) {
+          console.log(error.message);
+          reject(error.message);
+        },
+      );
+    });
+  }
+
+  loadContacts(): Promise<any[]> {
+    const webApi = this.webApi;
+    return new Promise(function (resolve, reject) {
+      webApi.retrieveMultipleRecords("contact", "?$select=firstname,lastname&$top=10").then(
         function (response: any) {
           if (response == null) resolve([]);
           resolve(response.entities);

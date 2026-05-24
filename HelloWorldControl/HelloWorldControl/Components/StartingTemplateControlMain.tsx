@@ -7,6 +7,7 @@ import { ListControl } from "./ListControl";
 import { FieldControl } from "./FieldControl";
 import { ButtonCustomApiControl } from "./ButtonCustomApiControl";
 import { BoundButtonControl } from "./BoundButtonControl";
+import { ContactsListControl } from "./ContactsListControl";
 
 export interface StartingTemplateControlMainProps {
   serviceProvider: ServiceProvider;
@@ -31,12 +32,15 @@ export const StartingTemplateControlMain = observer((props: StartingTemplateCont
             <ListControl />
           </Stack.Item>
           <Stack.Item>
+            <ContactsListControl />
+          </Stack.Item>
+          <Stack.Item>
             <BoundButtonControl />
             <br />
           </Stack.Item>
-          <Stack.Item>
+          {/* <Stack.Item>
             <ButtonCustomApiControl apiName="HelloWorld" />
-          </Stack.Item>
+          </Stack.Item> */}
         </Stack>
       </ServiceProviderContext.Provider>
     </>
