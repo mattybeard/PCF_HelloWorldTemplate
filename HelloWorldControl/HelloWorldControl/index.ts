@@ -63,6 +63,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
           vals.push(entity["name"]);
         });
         vm.set("displayValues", vals);
+      }).finally(() => {
         vm.set("loading", false);
       });
     }

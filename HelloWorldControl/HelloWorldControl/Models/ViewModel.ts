@@ -1,4 +1,5 @@
 import { action, makeObservable, observable, makeAutoObservable } from "mobx";
+import { CustomApiResponseModel } from "./CustomApiResponseModel";
 
 export class ViewModel {
   loading: boolean;
@@ -8,7 +9,7 @@ export class ViewModel {
   title: string;
   apiResponse: string;
   apiGuids: string[];
-  contactsList: string;
+  contactsList: string | null;
 
   refresh: () => void;
   allocatedWidth: number;
@@ -22,7 +23,7 @@ export class ViewModel {
     this.title = "Hello World Tallinn 2026";
     this.apiResponse = "";
     this.apiGuids = [];
-    this.contactsList = "";
+    this.contactsList = null;
 
     makeObservable(this, {
       loading: observable,
@@ -48,12 +49,11 @@ export class ViewModel {
     (this[key] as this[K]) = value;
   }
 
-  // setCustomApiResponse(json: string) {
-  //   const response = JSON.parse(json) as CustomApiResponseModel;
-  //   this.apiResponse = response.HelperText;
-  //   this.apiGuids = response.AccountIds;
-  //   this.loading = false;
-  // }
+  setCustomApiResponse(json: string) {
+    const response = JSON.parse(json) as CustomApiResponseModel;
+    this.apiResponse = response.HelperText;
+    this.apiGuids = response.AccountIds;
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   reset(): void {}

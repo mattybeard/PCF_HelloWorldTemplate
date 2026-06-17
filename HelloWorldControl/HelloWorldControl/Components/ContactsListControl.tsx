@@ -10,25 +10,23 @@ export interface ContactsListControlProps {}
 export const ContactsListControl = observer((props: ContactsListControlProps): React.JSX.Element => {
   const serviceProvider = React.useContext(ServiceProviderContext);
   const vm = serviceProvider.get<ViewModel>("vm");
-  const dataverseService = serviceProvider.get<DataverseService>("dataverseService");
+  const dv = serviceProvider.get<DataverseService>("dv");
 
   React.useEffect(() => {
-    loadContacts();
-  }, []);
-
-  const loadContacts = async () => {
-    try {
-      const contacts = await dataverseService.loadContacts();
-      // Concatenate contact names: First Name Last Name, First Name Last Name, ...
-      const concatenatedContacts = contacts
-        .map((contact) => `${contact.firstname || ""} ${contact.lastname || ""}`.trim())
-        .join(", ");
-      vm.contactsList = concatenatedContacts;
-    } catch (error) {
-      console.error("Error loading contacts:", error);
-      vm.contactsList = "Error loading contacts";
+    if (!vm.contactsList) {
+      try {
+        dv.loadContacts().then((contacts) => {
+          const concatenatedContacts = contacts
+            .map((contact) => `${contact.firstname || ""} ${contact.lastname || ""}`.trim())
+            .join(", ");
+          vm.set("contactsList", concatenatedContacts);
+        });
+      } catch (error) {
+        console.error("Error loading contacts:", error);
+        vm.set("contactsList", "Error loading contacts");
+      }
     }
-  };
+  }, [vm.contactsList, dv, vm]);
 
   return (
     <Stack horizontal={false} verticalAlign={"center"} style={{ width: "100%" }}>
@@ -39,7 +37,7 @@ export const ContactsListControl = observer((props: ContactsListControlProps): R
       </Stack.Item>
       <Stack.Item>
         <Text variant={"medium"} block style={{ textAlign: "center" }}>
-          {vm.contactsList || "Loading contacts..."}
+          {vm.contactsList ? vm.contactsList : "Loading contacts..."}
         </Text>
       </Stack.Item>
     </Stack>

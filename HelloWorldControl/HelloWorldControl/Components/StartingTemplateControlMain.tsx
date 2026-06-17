@@ -5,9 +5,9 @@ import { ServiceProvider, ServiceProviderContext } from "../Models/ServiceProvid
 import { ViewModel } from "../Models/ViewModel";
 import { ListControl } from "./ListControl";
 import { FieldControl } from "./FieldControl";
-import { ButtonCustomApiControl } from "./ButtonCustomApiControl";
 import { BoundButtonControl } from "./BoundButtonControl";
 import { ContactsListControl } from "./ContactsListControl";
+import { ButtonCustomApiControl } from "./ButtonCustomApiControl";
 
 export interface StartingTemplateControlMainProps {
   serviceProvider: ServiceProvider;
@@ -38,9 +38,9 @@ export const StartingTemplateControlMain = observer((props: StartingTemplateCont
             <BoundButtonControl />
             <br />
           </Stack.Item>
-          {/* <Stack.Item>
+          <Stack.Item>
             <ButtonCustomApiControl apiName="HelloWorld" />
-          </Stack.Item> */}
+          </Stack.Item>
         </Stack>
       </ServiceProviderContext.Provider>
     </>

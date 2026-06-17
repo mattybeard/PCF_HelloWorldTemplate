@@ -15,11 +15,10 @@ export class DataverseService {
     return new Promise(function (resolve, reject) {
       webApi.retrieveMultipleRecords("account", "?$select=name&$top=5").then(
         function (response: any) {
-          if (response == null) rdfesolve([]);
+          if (response == null) resolve([]);
           resolve(response.entities);
         },
         function (error: any) {
-          console.log(error.message);
           reject(error.message);
         },
       );
@@ -27,19 +26,12 @@ export class DataverseService {
   }
 
   loadContacts(): Promise<any[]> {
-    const webApi = this.webApi;
-    return new Promise(function (resolve, reject) {
-      webApi.retrieveMultipleRecords("contact", "?$select=firstname,lastname&$top=10").then(
-        function (response: any) {
-          if (response == null) resolve([]);
-          resolve(response.entities);
-        },
-        function (error: any) {
-          console.log(error.message);
-          reject(error.message);
-        },
-      );
-    });
+     return this.webApi
+    .retrieveMultipleRecords(
+      "contact",
+      "?$select=firstname,lastname&$top=10",
+    )
+    .then((response: any) => (response?.entities ?? []) as any[]);
   }
 
   callUnboundCustomApi(input: string): Promise<string> {
@@ -70,7 +62,6 @@ export class DataverseService {
             resolve(resp.JsonResponse);
           } else {
             const error = JSON.parse(req.response).error;
-            console.log(error.message);
             reject(error.message);
           }
         }

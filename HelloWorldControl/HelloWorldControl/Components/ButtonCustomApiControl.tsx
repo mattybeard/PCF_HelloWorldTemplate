@@ -26,6 +26,8 @@ export const ButtonCustomApiControl = observer((props: ButtonCustomApiControlPro
               vm.set("loading", true);
               dv.callUnboundCustomApi(input).then((response) => {
                 vm.setCustomApiResponse(response);
+              }).finally(() => {
+                vm.set("loading", false);
               });
             }}
           >
