@@ -25,6 +25,7 @@ export const ButtonCustomApiControl = observer((props: ButtonCustomApiControlPro
             styles={{ root: { marginTop: 8 } }}
             onClick={() => {
               vm.set("loading", true);
+              vm.set("apiError", "");
               dv.callUnboundCustomApi(input)
                 .then((response) => {
                   vm.setCustomApiResponse(response);
