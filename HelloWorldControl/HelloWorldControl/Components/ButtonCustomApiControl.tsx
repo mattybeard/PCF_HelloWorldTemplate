@@ -31,7 +31,12 @@ export const ButtonCustomApiControl = observer((props: ButtonCustomApiControlPro
                 })
                 .catch((error) => {
                   console.error("Error calling custom API:", error);
-                  vm.set("apiError", "Error calling Custom API");
+                  vm.set("apiResponse", "");
+                  vm.set("apiGuids", []);
+                  vm.set(
+                    "apiError",
+                    `Error calling Custom API: ${error instanceof Error ? error.message : String(error)}`,
+                  );
                 })
                 .finally(() => {
                   vm.set("loading", false);

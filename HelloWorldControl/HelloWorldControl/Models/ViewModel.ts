@@ -1,5 +1,4 @@
-import { action, makeObservable, observable, makeAutoObservable } from "mobx";
-import { CustomApiResponseModel } from "./CustomApiResponseModel";
+import { action, makeObservable, observable } from "mobx";
 
 export class ViewModel {
   loading: boolean;

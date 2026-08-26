@@ -64,6 +64,10 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
             result.map((entity) => entity.name ?? ""),
           );
         })
+        .catch((error) => {
+          console.error("Error loading accounts:", error);
+          vm.set("displayValues", []);
+        })
         .finally(() => {
           vm.set("loading", false);
         });
