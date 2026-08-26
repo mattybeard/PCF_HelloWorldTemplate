@@ -101,3 +101,5 @@ The skill encodes the same patterns covered in the talk (central ViewModel, Serv
 
 Built for **South Coast Summit 2025**.  
 Updated for **Nordic Summit 2026**.  
+Thanks to Carl Cookson for the always incredible assistance.
+
