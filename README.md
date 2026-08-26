@@ -3,6 +3,8 @@
 Supporting code for my **South Coast Summit 2025** session:  
 **“From Scratch to Solid: A Reusable Framework for PCF Components”**  
 
+Updated for **Nordic Summit 2026**, with the same core session content plus a new Copilot **skill** (`pcf-standards`) that captures the architecture as reusable AI guidance — see [Copilot Skill](#-copilot-skill-pcf-standards) below.
+
 This repository contains a simple **HelloWorld PCF control** and an accompanying **Dataverse Custom API**. Together, they illustrate the patterns I talked about in the presentation: **Service Provider, ViewModel, MobX, Fluent UI, and Output Parameters.**  
 
 ---
@@ -65,6 +67,20 @@ pac pcf push
 
 ---
 
+## 🤖 Copilot Skill (`pcf-standards`)
+
+New for **Nordic Summit 2026**: this repo ships a Copilot **skill** at [`.agents/skills/pcf-standards/skill.md`](.agents/skills/pcf-standards/skill.md). A skill is a reusable, packaged set of instructions that GitHub Copilot (and other Copilot-compatible agents) can load automatically to apply this repository's architecture — MobX ViewModel, ServiceProvider, DataverseService isolation, and component conventions — when working on PCF controls.
+
+**How to use it:**
+
+- **In this repo:** VS Code Copilot auto-discovers skills under `.agents/skills/`. Just ask Copilot Chat to build, extend, debug, or review PCF control code, and it will pick up the `pcf-standards` guidance automatically — no extra prompting required.
+- **In another PCF project:** Copy the `.agents/skills/pcf-standards/` folder into that repository (or reference this repo via the `reference-repository` metadata in the skill) so Copilot applies the same conventions there.
+- **Manually pointing Copilot at it:** If auto-discovery doesn't trigger, ask Copilot Chat to read `.agents/skills/pcf-standards/skill.md` before making changes.
+
+The skill encodes the same patterns covered in the talk (central ViewModel, ServiceProvider, DataverseService, component rules) so AI-assisted changes stay consistent with the approved architecture instead of introducing ad-hoc patterns.
+
+---
+
 ## ⚠️ Notes  
 
 - This is **demo code** — designed to show the framework approach rather than be production-ready.  
@@ -84,3 +100,6 @@ pac pcf push
 ## 🙌 Credits  
 
 Built for **South Coast Summit 2025**.  
+Updated for **Nordic Summit 2026**.  
+Thanks to Carl Cookson for the always incredible assistance!
+

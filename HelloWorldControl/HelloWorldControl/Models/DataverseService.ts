@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IInputs } from "../generated/ManifestTypes";
 
+export interface AccountSummary {
+  name?: string;
+}
+
+export interface ContactSummary {
+  firstname?: string;
+  lastname?: string;
+}
+
 export class DataverseService {
   webApi: ComponentFramework.WebApi;
   context: ComponentFramework.Context<IInputs>;
@@ -10,36 +19,16 @@ export class DataverseService {
     this.context = context;
   }
 
-  loadData(): Promise<any[]> {
-    const webApi = this.webApi;
-    return new Promise(function (resolve, reject) {
-      webApi.retrieveMultipleRecords("account", "?$select=name&$top=5").then(
-        function (response: any) {
-          if (response == null) rdfesolve([]);
-          resolve(response.entities);
-        },
-        function (error: any) {
-          console.log(error.message);
-          reject(error.message);
-        },
-      );
-    });
+  loadData(): Promise<AccountSummary[]> {
+    return this.webApi
+      .retrieveMultipleRecords("account", "?$select=name&$top=5")
+      .then((response) => (response?.entities ?? []) as AccountSummary[]);
   }
 
-  loadContacts(): Promise<any[]> {
-    const webApi = this.webApi;
-    return new Promise(function (resolve, reject) {
-      webApi.retrieveMultipleRecords("contact", "?$select=firstname,lastname&$top=10").then(
-        function (response: any) {
-          if (response == null) resolve([]);
-          resolve(response.entities);
-        },
-        function (error: any) {
-          console.log(error.message);
-          reject(error.message);
-        },
-      );
-    });
+  loadContacts(): Promise<ContactSummary[]> {
+    return this.webApi
+      .retrieveMultipleRecords("contact", "?$select=firstname,lastname&$top=10")
+      .then((response) => (response?.entities ?? []) as ContactSummary[]);
   }
 
   callUnboundCustomApi(input: string): Promise<string> {
@@ -70,7 +59,6 @@ export class DataverseService {
             resolve(resp.JsonResponse);
           } else {
             const error = JSON.parse(req.response).error;
-            console.log(error.message);
             reject(error.message);
           }
         }

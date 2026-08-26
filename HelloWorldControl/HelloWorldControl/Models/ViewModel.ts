@@ -1,4 +1,5 @@
-import { action, makeObservable, observable, makeAutoObservable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
+import { CustomApiResponseModel } from "./CustomApiResponseModel";
 
 export class ViewModel {
   loading: boolean;
@@ -7,8 +8,9 @@ export class ViewModel {
   displayValues: string[];
   title: string;
   apiResponse: string;
+  apiError: string | null;
   apiGuids: string[];
-  contactsList: string;
+  contactsList: string | null;
 
   refresh: () => void;
   allocatedWidth: number;
@@ -21,8 +23,9 @@ export class ViewModel {
     this.displayValues = [];
     this.title = "Hello World Tallinn 2026";
     this.apiResponse = "";
+    this.apiError = null;
     this.apiGuids = [];
-    this.contactsList = "";
+    this.contactsList = null;
 
     makeObservable(this, {
       loading: observable,
@@ -30,6 +33,7 @@ export class ViewModel {
       boundValue: observable,
       inputValue: observable,
       apiResponse: observable,
+      apiError: observable,
       apiGuids: observable,
       contactsList: observable,
       setAllocatedSize: action,
@@ -48,12 +52,12 @@ export class ViewModel {
     (this[key] as this[K]) = value;
   }
 
-  // setCustomApiResponse(json: string) {
-  //   const response = JSON.parse(json) as CustomApiResponseModel;
-  //   this.apiResponse = response.HelperText;
-  //   this.apiGuids = response.AccountIds;
-  //   this.loading = false;
-  // }
+  setCustomApiResponse(json: string) {
+    const response = JSON.parse(json) as CustomApiResponseModel;
+    this.apiResponse = response.HelperText;
+    this.apiGuids = response.AccountIds;
+    this.apiError = null;
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   reset(): void {}

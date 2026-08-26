@@ -57,14 +57,20 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
 
     if (!vm.loading && vm.displayValues.length === 0) {
       vm.set("loading", true);
-      dv.loadData().then((result) => {
-        const vals: string[] = [];
-        result.map((entity) => {
-          vals.push(entity["name"]);
+      dv.loadData()
+        .then((result) => {
+          vm.set(
+            "displayValues",
+            result.map((entity) => entity.name ?? ""),
+          );
+        })
+        .catch((error) => {
+          console.error("Error loading accounts:", error);
+          vm.set("displayValues", []);
+        })
+        .finally(() => {
+          vm.set("loading", false);
         });
-        vm.set("displayValues", vals);
-        vm.set("loading", false);
-      });
     }
 
     vm.set("boundValue", context.parameters.boundField.raw ?? "");
