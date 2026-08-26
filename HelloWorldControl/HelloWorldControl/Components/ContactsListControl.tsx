@@ -14,17 +14,17 @@ export const ContactsListControl = observer((props: ContactsListControlProps): R
 
   React.useEffect(() => {
     if (!vm.contactsList) {
-      try {
-        dv.loadContacts().then((contacts) => {
+      dv.loadContacts()
+        .then((contacts) => {
           const concatenatedContacts = contacts
             .map((contact) => `${contact.firstname || ""} ${contact.lastname || ""}`.trim())
             .join(", ");
           vm.set("contactsList", concatenatedContacts);
+        })
+        .catch((error) => {
+          console.error("Error loading contacts:", error);
+          vm.set("contactsList", "Error loading contacts");
         });
-      } catch (error) {
-        console.error("Error loading contacts:", error);
-        vm.set("contactsList", "Error loading contacts");
-      }
     }
   }, [vm.contactsList, dv, vm]);
 

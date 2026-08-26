@@ -10,7 +10,7 @@ export const BoundButtonControl = observer((props: BoundButtonControlProps): Rea
   const serviceProvider = React.useContext(ServiceProviderContext);
   const vm = serviceProvider.get<ViewModel>("vm");
   const [input, setInput] = React.useState<string>(vm.boundValue);
-  let debounceTimer: number | undefined;
+  const debounceTimer = React.useRef<number | undefined>(undefined);
 
   return (
     <>
@@ -21,14 +21,14 @@ export const BoundButtonControl = observer((props: BoundButtonControlProps): Rea
           const val = newValue ?? "";
           setInput(val);
 
-          clearTimeout(debounceTimer);
-          debounceTimer = window.setTimeout(() => {
+          window.clearTimeout(debounceTimer.current);
+          debounceTimer.current = window.setTimeout(() => {
             vm.set("boundValue", val);
             vm.refresh();
           }, 300);
         }}
         onBlur={() => {
-          clearTimeout(debounceTimer);
+          window.clearTimeout(debounceTimer.current);
           vm.set("boundValue", input);
           vm.refresh();
         }}

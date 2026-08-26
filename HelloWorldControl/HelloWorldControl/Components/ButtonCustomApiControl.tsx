@@ -22,18 +22,26 @@ export const ButtonCustomApiControl = observer((props: ButtonCustomApiControlPro
         <>
           <TextField label="Value For PCF" value={input} onChange={(e, newValue) => setInput(newValue || "")} />
           <PrimaryButton
+            styles={{ root: { marginTop: 8 } }}
             onClick={() => {
               vm.set("loading", true);
-              dv.callUnboundCustomApi(input).then((response) => {
-                vm.setCustomApiResponse(response);
-              }).finally(() => {
-                vm.set("loading", false);
-              });
+              dv.callUnboundCustomApi(input)
+                .then((response) => {
+                  vm.setCustomApiResponse(response);
+                })
+                .catch((error) => {
+                  console.error("Error calling custom API:", error);
+                  vm.set("apiError", "Error calling Custom API");
+                })
+                .finally(() => {
+                  vm.set("loading", false);
+                });
             }}
           >
             Call Custom API
           </PrimaryButton>
           {vm.apiResponse && vm.apiResponse.length > 0 && <Text>Last Response was: {vm.apiResponse}</Text>}
+          {vm.apiError && <Text style={{ color: "#a4262c" }}>{vm.apiError}</Text>}
         </>
       )}
     </>

@@ -8,6 +8,7 @@ export class ViewModel {
   displayValues: string[];
   title: string;
   apiResponse: string;
+  apiError: string | null;
   apiGuids: string[];
   contactsList: string | null;
 
@@ -22,6 +23,7 @@ export class ViewModel {
     this.displayValues = [];
     this.title = "Hello World Tallinn 2026";
     this.apiResponse = "";
+    this.apiError = null;
     this.apiGuids = [];
     this.contactsList = null;
 
@@ -31,6 +33,7 @@ export class ViewModel {
       boundValue: observable,
       inputValue: observable,
       apiResponse: observable,
+      apiError: observable,
       apiGuids: observable,
       contactsList: observable,
       setAllocatedSize: action,
@@ -53,6 +56,7 @@ export class ViewModel {
     const response = JSON.parse(json) as CustomApiResponseModel;
     this.apiResponse = response.HelperText;
     this.apiGuids = response.AccountIds;
+    this.apiError = null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
