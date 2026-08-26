@@ -13,7 +13,7 @@ export const ContactsListControl = observer((props: ContactsListControlProps): R
   const dv = serviceProvider.get<DataverseService>("dv");
 
   React.useEffect(() => {
-    if (!vm.contactsList) {
+    if (vm.contactsList === null) {
       dv.loadContacts()
         .then((contacts) => {
           const concatenatedContacts = contacts
@@ -37,7 +37,7 @@ export const ContactsListControl = observer((props: ContactsListControlProps): R
       </Stack.Item>
       <Stack.Item>
         <Text variant={"medium"} block style={{ textAlign: "center" }}>
-          {vm.contactsList ? vm.contactsList : "Loading contacts..."}
+          {vm.contactsList !== null ? vm.contactsList : "Loading contacts..."}
         </Text>
       </Stack.Item>
     </Stack>
