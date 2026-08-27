@@ -18,7 +18,7 @@ export const FieldControl = observer((props: FieldControlProps): React.JSX.Eleme
       <Stack horizontal={false} verticalAlign={"center"} style={{ width: "100%", padding: "10px" }}>
         <Stack.Item>
           <Text variant={"medium"} block>
-            Input Field (updates output):
+            Input Static Value:
           </Text>
         </Stack.Item>
         <Stack.Item>
@@ -39,7 +39,7 @@ export const FieldControl = observer((props: FieldControlProps): React.JSX.Eleme
               vm.set("inputValue", input);
               vm.refresh?.();
             }}
-            placeholder="Enter text - this will be output to boundField"
+            placeholder="Enter text"
             styles={{ root: { width: "100%" } }}
           />
         </Stack.Item>

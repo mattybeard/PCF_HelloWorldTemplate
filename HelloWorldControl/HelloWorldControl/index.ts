@@ -47,7 +47,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    */
   public updateView(context: ComponentFramework.Context<IInputs>): void {
     const vm = this.viewModel;
-    vm.set("boundValue", context.parameters.boundField?.raw ?? "");
+    vm.set("inputValue", context.parameters.inputField.raw ?? "");
 
     const reactRoot = createRoot(this._container);
     reactRoot.render(React.createElement(StartingTemplateControlMain, { serviceProvider: this.serviceProvider }));
@@ -59,7 +59,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    */
   public getOutputs(): IOutputs {
     return {
-      boundField: this.viewModel.inputValue,
+      boundField: this.viewModel.boundValue,
     };
   }
 

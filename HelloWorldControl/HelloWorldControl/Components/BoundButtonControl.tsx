@@ -11,8 +11,7 @@ export const BoundButtonControl = observer((props: BoundButtonControlProps): Rea
   const vm = serviceProvider.get<ViewModel>("vm");
 
   const handleClick = () => {
-    const timestamp = new Date().toLocaleTimeString();
-    vm.set("inputValue", `Updated at ${timestamp}`);
+    vm.set("boundValue", vm.inputValue);
     vm.refresh?.();
   };
 
