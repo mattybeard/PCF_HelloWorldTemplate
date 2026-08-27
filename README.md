@@ -11,7 +11,7 @@ Updated for **Nordic Summit 2026**, with the same core session content plus a ne
 
 **Status:** ✅ Centralized state management  
 **What's included:**
-- ViewModel class with MobX observables (`inputValue`, `boundValue`)
+- ViewModel class with MobX observables (`inputValue`)
 - ServiceProvider for dependency injection and service registration
 - ServiceProviderContext for passing services to components
 - Observer pattern with `mobx-react-lite`

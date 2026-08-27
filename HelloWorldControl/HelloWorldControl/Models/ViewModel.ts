@@ -2,15 +2,12 @@ import { action, makeObservable, observable } from "mobx";
 
 export class ViewModel {
   inputValue: string;
-  boundValue: string;
 
   constructor() {
     this.inputValue = "";
-    this.boundValue = "";
 
     makeObservable(this, {
       inputValue: observable,
-      boundValue: observable,
       set: action,
     });
   }
