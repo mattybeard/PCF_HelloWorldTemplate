@@ -10,6 +10,9 @@ export const FieldControl = observer((props: FieldControlProps): React.JSX.Eleme
   const serviceProvider = React.useContext(ServiceProviderContext);
   const vm = serviceProvider.get<ViewModel>("vm");
 
+  const [input, setInput] = React.useState(vm.inputValue);
+  const debounceTimer = React.useRef<number | undefined>(undefined);
+
   return (
     <>
       <Stack horizontal={false} verticalAlign={"center"} style={{ width: "100%", padding: "10px" }}>
@@ -20,10 +23,21 @@ export const FieldControl = observer((props: FieldControlProps): React.JSX.Eleme
         </Stack.Item>
         <Stack.Item>
           <TextField
-            value={vm.inputValue}
-            onChange={(event, newValue) => {
-              vm.set("inputValue", newValue || "");
-              vm.refresh();
+            value={input}
+            onChange={(e, newValue) => {
+              const val = newValue ?? "";
+              setInput(val);
+
+              window.clearTimeout(debounceTimer.current);
+              debounceTimer.current = window.setTimeout(() => {
+                vm.set("inputValue", val);
+                vm.refresh?.();
+              }, 300);
+            }}
+            onBlur={() => {
+              window.clearTimeout(debounceTimer.current);
+              vm.set("inputValue", input);
+              vm.refresh?.();
             }}
             placeholder="Enter text - this will be output to boundField"
             styles={{ root: { width: "100%" } }}

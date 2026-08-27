@@ -5,14 +5,14 @@ export class ViewModel {
   boundValue: string;
   displayValues: string[];
   loading: boolean;
-  refresh: () => void;
+
+  refresh?: () => void;
 
   constructor() {
     this.inputValue = "";
     this.boundValue = "";
     this.displayValues = [];
     this.loading = false;
-    this.refresh = () => {};
 
     makeObservable(this, {
       inputValue: observable,

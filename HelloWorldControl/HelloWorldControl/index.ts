@@ -11,7 +11,6 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
   private _container: HTMLDivElement;
   serviceProvider: ServiceProvider;
   viewModel: ViewModel;
-  private notifyOutputChanged: () => void;
 
   /**
    * Empty constructor.
@@ -32,7 +31,6 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
     container: HTMLDivElement,
   ): void {
     this._container = container;
-    this.notifyOutputChanged = notifyOutputChanged;
     this.viewModel = new ViewModel();
     this.viewModel.refresh = () => {
       notifyOutputChanged();

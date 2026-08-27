@@ -24,13 +24,13 @@ export const BoundButtonControl = observer((props: BoundButtonControlProps): Rea
           window.clearTimeout(debounceTimer.current);
           debounceTimer.current = window.setTimeout(() => {
             vm.set("boundValue", val);
-            vm.refresh();
+            vm.refresh?.();
           }, 300);
         }}
         onBlur={() => {
           window.clearTimeout(debounceTimer.current);
           vm.set("boundValue", input);
-          vm.refresh();
+          vm.refresh?.();
         }}
       />
     </>
