@@ -13,7 +13,7 @@ export const BoundButtonControl = observer((props: BoundButtonControlProps): Rea
   const handleClick = () => {
     const timestamp = new Date().toLocaleTimeString();
     vm.set("inputValue", `Updated at ${timestamp}`);
-    vm.refresh();
+    vm.refresh?.();
   };
 
   return (
