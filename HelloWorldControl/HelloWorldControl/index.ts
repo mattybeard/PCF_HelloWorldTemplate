@@ -2,16 +2,10 @@
 import React = require("react");
 import { createRoot } from "react-dom/client";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import { ServiceProvider } from "./Models/ServiceProvider";
-import { ViewModel } from "./Models/ViewModel";
-import { DataverseService } from "./Models/DataverseService";
 import { StartingTemplateControlMain } from "./Components/StartingTemplateControlMain";
-import { runInAction } from "mobx";
 
 export class HelloWorldControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
   private _container: HTMLDivElement;
-  serviceProvider: ServiceProvider;
-  viewModel: ViewModel;
   private notifyOutputChanged: () => void;
 
   /**
@@ -33,14 +27,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
     container: HTMLDivElement,
   ): void {
     this._container = container;
-    this.viewModel = new ViewModel();
-    this.viewModel.refresh = function () {
-      notifyOutputChanged();
-    };
-    this.serviceProvider = new ServiceProvider();
-    this.serviceProvider.register("vm", this.viewModel);
-    this.serviceProvider.register("dv", new DataverseService(context.webAPI, context));
-
+    this.notifyOutputChanged = notifyOutputChanged;
     context.mode.trackContainerResize(true);
   }
 
@@ -49,45 +36,16 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
   public updateView(context: ComponentFramework.Context<IInputs>): void {
-    const dv = new DataverseService(context.webAPI, context);
-    this.serviceProvider.register("dv", dv);
-    console.log("UpdateView called");
-    const vm = this.viewModel;
-    vm.setAllocatedSize(context.mode.allocatedWidth, context.mode.allocatedHeight);
-
-    if (!vm.loading && vm.displayValues.length === 0) {
-      vm.set("loading", true);
-      dv.loadData()
-        .then((result) => {
-          vm.set(
-            "displayValues",
-            result.map((entity) => entity.name ?? ""),
-          );
-        })
-        .catch((error) => {
-          console.error("Error loading accounts:", error);
-          vm.set("displayValues", []);
-        })
-        .finally(() => {
-          vm.set("loading", false);
-        });
-    }
-
-    vm.set("boundValue", context.parameters.boundField.raw ?? "");
-    vm.set("inputValue", context.parameters.inputField.raw ?? "");
-
     const reactRoot = createRoot(this._container);
-    reactRoot.render(React.createElement(StartingTemplateControlMain, { serviceProvider: this.serviceProvider }));
+    reactRoot.render(React.createElement(StartingTemplateControlMain));
   }
 
   /**
    * It is called by the framework prior to a control receiving new data.
-   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
+   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as "bound" or "output"
    */
   public getOutputs(): IOutputs {
-    return {
-      boundField: this.viewModel.boundValue,
-    };
+    return {};
   }
 
   /**
