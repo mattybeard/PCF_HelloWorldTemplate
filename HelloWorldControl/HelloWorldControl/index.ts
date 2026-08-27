@@ -79,7 +79,7 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    */
   public getOutputs(): IOutputs {
     return {
-      boundField: this.viewModel.inputValue,
+      boundField: this.viewModel.boundValue,
     };
   }
 
