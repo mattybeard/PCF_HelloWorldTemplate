@@ -3,11 +3,9 @@ import { Stack, Text } from "@fluentui/react";
 import { observer } from "mobx-react-lite";
 import { ServiceProvider, ServiceProviderContext } from "../Models/ServiceProvider";
 import { ViewModel } from "../Models/ViewModel";
-import { ListControl } from "./ListControl";
 import { FieldControl } from "./FieldControl";
 import { BoundButtonControl } from "./BoundButtonControl";
-import { ContactsListControl } from "./ContactsListControl";
-import { ButtonCustomApiControl } from "./ButtonCustomApiControl";
+import { ListControl } from "./ListControl";
 
 export interface StartingTemplateControlMainProps {
   serviceProvider: ServiceProvider;
@@ -22,25 +20,30 @@ export const StartingTemplateControlMain = observer((props: StartingTemplateCont
         <Stack horizontal={false} verticalAlign={"center"} style={{ width: "100%" }}>
           <Stack.Item>
             <Text variant={"xLarge"} block style={{ textAlign: "center" }}>
-              Welcome to {vm.title}
+              Welcome to PCF Hello World
             </Text>
           </Stack.Item>
           <Stack.Item>
             <FieldControl />
           </Stack.Item>
           <Stack.Item>
-            <ListControl />
-          </Stack.Item>
-          <Stack.Item>
-            <ContactsListControl />
-          </Stack.Item>
-          <Stack.Item>
             <BoundButtonControl />
-            <br />
           </Stack.Item>
-          <Stack.Item>
-            <ButtonCustomApiControl apiName="HelloWorld" />
-          </Stack.Item>
+          {vm.loading && (
+            <Stack.Item>
+              <Text variant={"medium"} block style={{ textAlign: "center" }}>
+                Loading accounts...
+              </Text>
+            </Stack.Item>
+          )}
+          {vm.displayValues.length > 0 && (
+            <Stack.Item>
+              <Text variant={"medium"} block style={{ textAlign: "center", marginTop: "20px", fontWeight: "bold" }}>
+                Loaded Accounts:
+              </Text>
+              <ListControl />
+            </Stack.Item>
+          )}
         </Stack>
       </ServiceProviderContext.Provider>
     </>

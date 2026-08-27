@@ -6,7 +6,6 @@ import { ServiceProvider } from "./Models/ServiceProvider";
 import { ViewModel } from "./Models/ViewModel";
 import { DataverseService } from "./Models/DataverseService";
 import { StartingTemplateControlMain } from "./Components/StartingTemplateControlMain";
-import { runInAction } from "mobx";
 
 export class HelloWorldControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
   private _container: HTMLDivElement;
@@ -33,14 +32,14 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
     container: HTMLDivElement,
   ): void {
     this._container = container;
+    this.notifyOutputChanged = notifyOutputChanged;
     this.viewModel = new ViewModel();
-    this.viewModel.refresh = function () {
+    this.viewModel.refresh = () => {
       notifyOutputChanged();
     };
     this.serviceProvider = new ServiceProvider();
     this.serviceProvider.register("vm", this.viewModel);
     this.serviceProvider.register("dv", new DataverseService(context.webAPI, context));
-
     context.mode.trackContainerResize(true);
   }
 
@@ -49,11 +48,10 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
   public updateView(context: ComponentFramework.Context<IInputs>): void {
-    const dv = new DataverseService(context.webAPI, context);
-    this.serviceProvider.register("dv", dv);
-    console.log("UpdateView called");
+    const dv = this.serviceProvider.get<DataverseService>("dv");
     const vm = this.viewModel;
-    vm.setAllocatedSize(context.mode.allocatedWidth, context.mode.allocatedHeight);
+    vm.set("inputValue", context.parameters.inputField?.raw ?? "");
+    vm.set("boundValue", context.parameters.boundField?.raw ?? "");
 
     if (!vm.loading && vm.displayValues.length === 0) {
       vm.set("loading", true);
@@ -73,20 +71,17 @@ export class HelloWorldControl implements ComponentFramework.StandardControl<IIn
         });
     }
 
-    vm.set("boundValue", context.parameters.boundField.raw ?? "");
-    vm.set("inputValue", context.parameters.inputField.raw ?? "");
-
     const reactRoot = createRoot(this._container);
     reactRoot.render(React.createElement(StartingTemplateControlMain, { serviceProvider: this.serviceProvider }));
   }
 
   /**
    * It is called by the framework prior to a control receiving new data.
-   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
+   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as "bound" or "output"
    */
   public getOutputs(): IOutputs {
     return {
-      boundField: this.viewModel.boundValue,
+      boundField: this.viewModel.inputValue,
     };
   }
 
